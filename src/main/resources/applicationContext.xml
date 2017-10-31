@@ -9,4 +9,8 @@
     <context:component-scan base-package="com.yu.test.controller" >
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="filterAdapter" class="com.yu.test.job.FilterAdapter"/>
 </beans>
