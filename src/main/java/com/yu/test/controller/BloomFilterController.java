@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.xml.internal.fastinfoset.stax.events.Util;
 import com.yu.test.job.FilterAdapter;
+import com.yu.test.service.ServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,11 @@ public class BloomFilterController {
     private static final  int EXCEPTION_ERROR = 1;
     private static final  int PARAM_ERROR = 2;
 
-    @Autowired
     private FilterAdapter filterAdapter;
+
+    BloomFilterController(){
+        filterAdapter = ServiceFactory.filterAdapter();
+    }
 
     @RequestMapping(produces = "text/xml;charset=utf8", value = "check", method = {RequestMethod.POST})
     @ResponseBody
