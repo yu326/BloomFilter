@@ -1,18 +1,29 @@
 package com.yu.test.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.yu.test.config.RedisServiceConfig;
+import com.yu.test.job.FilterAdapter;
+
 /**
  * Created by koreyoshi on 2017/10/31.
  */
 public interface BloomFilterService {
     /**
-     * 判断字符串是否包含在布隆过滤器中
+     * 拿到需要过滤的数据
+     *
+     * @param doc 原始数据
+     * @return
      */
-    public boolean contains(String value);
+    public String getFilterParam(JSONObject doc);
 
     /**
-     * 像过滤器中添加字符串
+     * 进行判断字符串是否在过滤器中
+     *
+     * @param redisServiceConfig redis配置文件
+     * @param filterData         待判断的数据
+     * @return
      */
-    public void addValue(String value);
+    public boolean filterByData(RedisServiceConfig redisServiceConfig, FilterAdapter filterAdapter, String filterData);
 
 
 }
