@@ -17,17 +17,24 @@ public class RedisServiceConfig {
 
     private static RedisServiceConfig config;
 
+    //redisConfigCacheMap  key
     private static String REDIS_SERVICE_IP = "redisServiceIp";
     private static String REDIS_SERVICE_PORT = "redisServicePort";
     private static String REDIS_DBAUTH = "dbAuth";
     private static String REDIS_DBAUTH_PASSWORD = "dbAuthPassword";
 
+    //redisConfigCacheMap
     private static Map<String, String> redisServiceConfigMap = new HashMap<String, String>(4);
 
     public static void main(String[] args) {
         RedisServiceConfig.getConfig();
     }
 
+    /**
+     * 获取配置文件中redis的信息
+     *
+     * @return
+     */
     public static RedisServiceConfig getConfig() {
         synchronized (RedisServiceConfig.class) {
             if (config != null) {

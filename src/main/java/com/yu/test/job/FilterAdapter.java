@@ -70,6 +70,4 @@ public class FilterAdapter {
             jedis.setbit(REDIS_CACHE_KEY, f.hash(value), true);
         }
     }
-
-
 }
