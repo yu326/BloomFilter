@@ -12,7 +12,7 @@ public class FilterAdapter {
     private static final int BIT_SIZE = 2 << 28;//二进制向量的位数，相当于能存储1000万条url左右，误报率为千万分之一
     private static final int[] seeds = new int[]{3, 5, 7, 11, 13, 31, 37, 61};//用于生成信息指纹的8个随机数，最好选取质数
 
-    private static final String REDIS_CACHE_KEY = "key1";
+    private static final String REDIS_CACHE_KEY = "redisKey";
     private static Hash[] func = new Hash[seeds.length];//用于存储8个随机哈希值对象
 
     public FilterAdapter() {
@@ -52,7 +52,8 @@ public class FilterAdapter {
         boolean ret = true;
         //将要比较的字符串重新以上述方法计算hash值，再与布隆过滤器比对
         for (FilterAdapter.Hash f : func) {
-            boolean redisIssetRes = jedis.getbit(REDIS_CACHE_KEY, f.hash(value));
+            int hashValue = f.hash(value);
+            boolean redisIssetRes = jedis.getbit(REDIS_CACHE_KEY + hashValue % 10, hashValue);
             if (!redisIssetRes) {
                 return false;
             }
@@ -67,7 +68,8 @@ public class FilterAdapter {
     public void addValue(String value, Jedis jedis) {
         //将字符串value哈希为8个或多个整数，然后在这些整数的bit上变为1
         for (Hash f : func) {
-            jedis.setbit(REDIS_CACHE_KEY, f.hash(value), true);
+            int hashValue = f.hash(value);
+            jedis.setbit(REDIS_CACHE_KEY + hashValue % 10, hashValue, true);
         }
     }
 }
